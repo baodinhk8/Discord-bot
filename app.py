@@ -26,7 +26,22 @@ async def on_message(message):
         await message.channel.send("STOP SPAMMING "+str(message.author))
         cnt = 0
 
-    if message.content.startswith("play"):
+    if message.content.startswith("*"):
+      if message.content == "*help":
+        await message.channel.send("What a nerd dont even know how to use a bot")
+      elif message.content == "*dog":
+        await message.channel.send("bark bark")
+      elif message.content == "*magic":
+        await message.channel.send("""（ ͡° ͜ʖ ͡°)つ━☆・。
+⊂　　 ノ 　　　・゜+.
+　しーＪ　　　°。+ ´¨)
+　　　　　　　　　.· ´¸.·´¨) ¸.·*¨)
+　　　　　　　　　　(¸.·´ (¸.·' ☆ ABRA KADABRA...""")
+      elif message.content == "*cat":
+        await message.channel.send("mweo")
+      else:
+        await message.channel.send("Wrong syntax dude")
+    elif message.content.startswith("play"):
       try:
         if str(message.author)=="Um....#9661":
           
@@ -63,7 +78,7 @@ async def on_message(message):
           await message.channel.send("U r not mrdogs, ask him for permission to open a song")
       except:
         await message.channel.send("U need to be in voice channel idiot")
-    if message.content.startswith("stop"):
+    elif message.content.startswith("stop"):
       try:
         if str(message.author)=="Um....#9661":
             user=message.author
@@ -80,9 +95,13 @@ async def on_message(message):
 
     elif message.content.startswith("hi"):
         await message.channel.send("Hello")
+    elif "https://tenor.com/view/reverse-card-uno-uno-cards-gif-13032597" in message.content:
+      await message.channel.send("https://tenor.com/view/reverse-card-uno-uno-cards-gif-13032597")
     elif message.content.startswith("owo"):
         if(str(message.channel)=="general"):
           await message.channel.send("GO TO <#931438020543012945> IDIOT "+str(message.author))
+    elif message.content.startswith("<@!935757968161517578>"):
+      await message.channel.send("Hi, the prefix of the bot is '*' . type *help for all the help command")
     elif "hello" in message.content:
         await message.channel.send("No one care")
     elif "bye" in message.content:
@@ -90,7 +109,7 @@ async def on_message(message):
     elif "suck" in message.content:
         await message.channel.send("hi sucker")
     elif "fuck" in message.content:
-        await message.channel.send("dude dont swear too much")
+        await message.channel.send("dude dont swear too much "+str(message.author))
     elif "idiot" in message.content:
         await message.channel.send("I think u an r idiot, not me")
     elif "hmm" in message.content:
@@ -138,11 +157,13 @@ async def on_message(message):
     # elif "<@!884667726025596958>" in message.content:
     #     await message.channel.send("Stop pinging him, he is playing bedwar")
     elif "<@!890546259180531732>" in message.content:
-        await message.channel.send("<@890546259180531732> is so handsome and smart and hes so friendly so please dont kick me :(")
+        await message.channel.send("<@890546259180531732> is ~~SUCK~~ so handsome and smart and hes so friendly so please dont kick me :(")
     elif "lol" in message.content:
         await message.channel.send(":laughing:")
     elif "shit" in message.content:
         await message.channel.send("💩")
+    elif "https://tenor.com/view/power-legendary-reverse-card-econowise-reverse-card-legendary-uno-reverse-card-uno-legendary-reverse-card-gif-23531292" in message.content:
+      await message.channel.send("https://tenor.com/view/power-legendary-reverse-card-econowise-reverse-card-legendary-uno-reverse-card-uno-legendary-reverse-card-gif-23531292")
     elif "(:" in message.content:
         await message.channel.send("this is 🙂 not (: nerd")
     elif "dogthesuperiors.web.app" in message.content:
@@ -156,4 +177,4 @@ async def on_message(message):
     
 keep_alive()
 
-client.run("OTM1NzU3OTY4MTYxNTE3NTc4.YfDShQ.UfZm1Hi_B-GXf8NrVhE43WLcIhc")
+client.run("You_Token")
