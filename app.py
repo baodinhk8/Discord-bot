@@ -1,107 +1,125 @@
 import discord
-from keepalive import keep_alive
 import yt_dlp
+import string    
+import random 
 
-cnt=0
+cnt = 0
 client = discord.Client()
-old_mess=""
+old_mess = ""
 
-vc=''
+vc = ''
 
 @client.event
 async def on_ready():
     print("Done")
+
+
 
 @client.event
 async def on_message(message):
     global cnt
     global old_mess
     global vc
-    if message.content==old_mess:
-        cnt+=1
+    if message.content == old_mess:
+        cnt += 1
     if message.author == client.user:
-        print(str(message.author)+' : ',message.content)
-        return 
-    if cnt==4:
+        print(str(message.author)+' : ', message.content)
+        return
+    if cnt == 4:
         await message.channel.send("STOP SPAMMING "+str(message.author))
         cnt = 0
 
     if message.content.startswith("*"):
-      if message.content == "*help":
-        await message.channel.send("What a nerd dont even know how to use a bot")
-      elif message.content == "*dog":
-        await message.channel.send("bark bark")
-      elif message.content == "*magic":
-        await message.channel.send("""（ ͡° ͜ʖ ͡°)つ━☆・。
+        if message.content.startswith("*help"):
+            await message.channel.send("""What a nerd dont even know how to use a bot
+All command:
+*help : U r using this command right now, idiot
+*dog : Dog
+*cat : Cat
+*jumpscare : jumpscare link
+*magic : Magic
+*play <ytb_url> : Play song
+*stop : Stop playing song
+*rickgen : rickroll link generator
+            """)
+        elif message.content.startswith("*dog"):
+            await message.channel.send("bark bark")
+        elif message.content.startswith("*magic"):
+            await message.channel.send("""（ ͡° ͜ʖ ͡°)つ━☆・。
 ⊂　　 ノ 　　　・゜+.
 　しーＪ　　　°。+ ´¨)
 　　　　　　　　　.· ´¸.·´¨) ¸.·*¨)
 　　　　　　　　　　(¸.·´ (¸.·' ☆ ABRA KADABRA...""")
-      elif message.content == "*cat":
-        await message.channel.send("mweo")
-      else:
-        await message.channel.send("Wrong syntax dude")
-    elif message.content.startswith("play"):
-      try:
-        if str(message.author)=="Um....#9661":
-          
-          user=message.author
-          voice_channel=user.voice.channel
+        elif message.content.startswith("*cat"):
+            await message.channel.send("mweo")
+        elif message.content.startswith("*jumpscare"):
+            await message.channel.send("Feel boring ? Click here --> https://bit.ly/3KLdX0q")
+        elif message.content.startswith("*rickgen"):
+            ran = ''.join(random.choices(string.ascii_uppercase + string.digits, k = 4))
+            await message.channel.send("Here is your rickroll link: https://awo.herokuapp.com/"+str(ran))
+        elif message.content.startswith("*play"):
+          try:
+              if str(message.author) == "Um....#9661" or str(message.author)=="DogTheSuperior#7989":
 
-          def repeat():
-            vc.play(discord.FFmpegPCMAudio('song.mp3'), after=lambda e: repeat())
-          
-          if voice_channel!= None:
-              command = str(message.content)
-              song = (command.split(" "))[1]
-              ydl_opts = {'outtmpl': './song',
-                  'postprocessors': [{
-                  'key': 'FFmpegExtractAudio',
-                  'preferredcodec': 'mp3',
-                  'preferredquality': '192',
-              }],}
-              with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                  ydl.download([song])
+                  user = message.author
+                  voice_channel = user.voice.channel
 
-              
+                  def repeat():
+                      vc.play(discord.FFmpegPCMAudio('song.mp3'),
+                              after=lambda e: repeat())
 
-              vc = await voice_channel.connect()
-              vc.play(discord.FFmpegPCMAudio('song.mp3'), after=lambda e: repeat())
-              # vc.pause()
-              # vc.resume()
-              # vc.stop()
-          else:
-              await message.channel.send('U need to be in voice channel idiot')
-              
-          await message.channel.send("Enjoy the music")
+                  if voice_channel != None:
+                      command = str(message.content)
+                      song = (command.split(" "))[1]
+                      ydl_opts = {'outtmpl': './song',
+                                  'postprocessors': [{
+                                      'key': 'FFmpegExtractAudio',
+                                      'preferredcodec': 'mp3',
+                                      'preferredquality': '192',
+                                  }], }
+                      with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                          ydl.download([song])
+
+                      vc = await voice_channel.connect()
+                      vc.play(discord.FFmpegPCMAudio('song.mp3'),
+                              after=lambda e: repeat())
+                      # vc.pause()
+                      # vc.resume()
+                      # vc.stop()
+                  else:
+                      await message.channel.send('U need to be in voice channel idiot')
+
+                  await message.channel.send("Enjoy the music")
+              else:
+                  await message.channel.send("U r not mrdogs, ask him for permission to open a song")
+          except:
+              await message.channel.send("U need to be in voice channel idiot")
+        elif message.content.startswith("*stop"):
+            try:
+                if str(message.author) == "Um....#9661" or str(message.author)=="DogTheSuperior#7989":
+                    user = message.author
+                    voice_channel = user.voice.channel
+                    if voice_channel != None:
+                        await vc.disconnect()
+                        vc = ""
+                    else:
+                        await message.channel.send('U need to be in voice channel idiot')
+                else:
+                    await message.channel.send("U r not mrdogs, ask him for permission to stop a song")
+            except:
+                await message.channel.send('no song r playing')
         else:
-          await message.channel.send("U r not mrdogs, ask him for permission to open a song")
-      except:
-        await message.channel.send("U need to be in voice channel idiot")
-    elif message.content.startswith("stop"):
-      try:
-        if str(message.author)=="Um....#9661":
-            user=message.author
-            voice_channel=user.voice.channel
-            if voice_channel!= None:
-              await vc.disconnect()
-              vc=""
-            else:
-              await message.channel.send('U need to be in voice channel idiot')    
-        else:
-          await message.channel.send("U r not mrdogs, ask him for permission to stop a song")
-      except:
-        await message.channel.send('no song r playing')    
+            await message.channel.send("Wrong syntax dude")
 
     elif message.content.startswith("hi"):
         await message.channel.send("Hello")
     elif "https://tenor.com/view/reverse-card-uno-uno-cards-gif-13032597" in message.content:
-      await message.channel.send("https://tenor.com/view/reverse-card-uno-uno-cards-gif-13032597")
+        await message.channel.send("https://tenor.com/view/reverse-card-uno-uno-cards-gif-13032597")
     elif message.content.startswith("owo"):
-        if(str(message.channel)=="general"):
-          await message.channel.send("GO TO <#931438020543012945> IDIOT "+str(message.author))
+        if(str(message.channel) == "general"):
+            await message.channel.send("GO TO <#931438020543012945> IDIOT "+str(message.author))
     elif message.content.startswith("<@!935757968161517578>"):
-      await message.channel.send("Hi, the prefix of the bot is '*' . type *help for all the help command")
+        await message.channel.send("Hi, the prefix of the bot is '*' . type *help for all the help command")
     elif "hello" in message.content:
         await message.channel.send("No one care")
     elif "bye" in message.content:
@@ -154,6 +172,8 @@ async def on_message(message):
         await message.channel.send("Stop playing in the middle of class")
     elif "mc" in message.content:
         await message.channel.send("Stop playing in the middle of class")
+    elif "<@!889124875816534086>" in message.content:
+        await message.channel.send("HMM DOG = GOD")
     # elif "<@!884667726025596958>" in message.content:
     #     await message.channel.send("Stop pinging him, he is playing bedwar")
     elif "<@!890546259180531732>" in message.content:
@@ -163,18 +183,16 @@ async def on_message(message):
     elif "shit" in message.content:
         await message.channel.send("💩")
     elif "https://tenor.com/view/power-legendary-reverse-card-econowise-reverse-card-legendary-uno-reverse-card-uno-legendary-reverse-card-gif-23531292" in message.content:
-      await message.channel.send("https://tenor.com/view/power-legendary-reverse-card-econowise-reverse-card-legendary-uno-reverse-card-uno-legendary-reverse-card-gif-23531292")
+        await message.channel.send("https://tenor.com/view/power-legendary-reverse-card-econowise-reverse-card-legendary-uno-reverse-card-uno-legendary-reverse-card-gif-23531292")
     elif "(:" in message.content:
-        await message.channel.send("this is 🙂 not (: nerd")
+        await message.channel.send("🙂 not (: , N.E.R.D")
     elif "dogthesuperiors.web.app" in message.content:
         await message.channel.send("Cool Website")
     elif "notcringes.web.app" in message.content:
         await message.channel.send("Really Cool Website")
     elif "dead chat" in message.content:
-      await message.channel.send("https://tenor.com/view/pacman-gif-21447981")
-    old_mess=message.content
-    print(str(message.author)+' : ',message.content)
-    
-keep_alive()
+        await message.channel.send("https://tenor.com/view/pacman-gif-21447981")
+    old_mess = message.content
+    print(str(message.author)+' : ', message.content)
 
-client.run("Your_Token")
+client.run("YOUR_BOT_TOKEN")
